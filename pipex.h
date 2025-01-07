@@ -7,6 +7,8 @@
 # include <fcntl.h>
 # include <stddef.h>
 # include <sys/wait.h>
+# include <string.h>
+# include <errno.h> 
 
 /*--------------Path operation------------*/
 

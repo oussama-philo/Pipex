@@ -1,5 +1,11 @@
 #include "pipex.h"
 
+void error_exit(char *msg)
+{
+	perror(msg);
+	exit(1);
+}
+
 void execute_cmd(char *argv[], char *envp[], int is_first)
 {
 	char **args;
@@ -36,8 +42,7 @@ void execute_cmd(char *argv[], char *envp[], int is_first)
 		free_array(paths);
 	}
 	free_array(args);
-	perror("Command not found");
-	exit(1);
+	error_exit("Command not found");
 }
 
 int main(int ac, char *av[], char *envp[])
@@ -54,8 +59,7 @@ int main(int ac, char *av[], char *envp[])
 
 	if (ac != 5)
 	{
-		perror("Number of argumet not 5");
-		exit(1);
+		error_exit("Number of argumet not 5");
 	}
 
 	if (access(av[1], R_OK) < 0)
@@ -66,16 +70,14 @@ int main(int ac, char *av[], char *envp[])
 
 	if (pipe(pipe_fd) == -1)
 	{
-		perror("Pipe not created");
-		exit(1);
+		error_exit("Pipe not created");
 	}
 
 	pid_1 = fork();
 
 	if (pid_1 < 0)
 	{
-		perror("Process not created");
-		exit(1);
+		error_exit("Process not created");
 	}
 
 	// child 1 process
@@ -85,8 +87,7 @@ int main(int ac, char *av[], char *envp[])
 
 		if (infile < 0)
 		{
-			perror("File not exist");
-			exit(1);
+			error_exit("File not exist");
 		}
 
 		dup2(infile, STDIN_FILENO);
@@ -105,8 +106,7 @@ int main(int ac, char *av[], char *envp[])
 
 	if (pid_2 < 0)
 	{
-		perror("Process not created");
-		exit(1);
+		error_exit("Process not created");
 	}
 
 	// child 2 process
@@ -116,8 +116,7 @@ int main(int ac, char *av[], char *envp[])
 
 		if (outfile < 0)
 		{
-			perror("File not exist");
-			exit(1);
+			error_exit("File not exist");
 		}
 
 		dup2(pipe_fd[0], STDIN_FILENO);

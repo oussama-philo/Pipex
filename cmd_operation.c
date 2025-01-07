@@ -8,6 +8,8 @@ char **split_cmd(const char *str)
 	if (!str)
 		return (NULL);
 
+	 printf("Debug: Splitting command: %s\n", str);
+
 	// Count words
 	i = 0;
 	word_count = 0;
